@@ -60,7 +60,7 @@ function displayStats() {
 function displayMenu() {
   console.log('\n\nSelect Option:\n');  // each \n creates a new line
   console.log('(d) Eat Dot');
-  console.log("(p) Eat Power-Pellet");
+  if(powerPellets > 0) console.log("(p) Eat Power-Pellet");
 
   for(var i = 0; i < ghosts.length; i++) {
     console.log("(" + (i+1) + ") Eat " + ghosts[i].name);
@@ -73,7 +73,6 @@ function displayPrompt() {
   // process.stdout.write is similar to console.log except it doesn't add a new line after the text
   process.stdout.write('\nWaka Waka :v '); // :v is the Pac-Man emoji.
 }
-
 
 // Menu Options
 function eatDot() {
@@ -88,6 +87,24 @@ function eatGhost(ghost) {
       console.log("\n" + ghosts[ghost-1].name + " that has the colour " + ghosts[ghost-1].colour + " is not edible.");
       gameOver(lives);
     }
+  }
+}
+
+function eatPowerPellet() {
+  if (powerPellets > 0) {
+    console.log('\nCHOMP!');
+    score += 50;
+    powerPellets -= 1;
+
+    // for (var i = 0; i < ghosts.length; i++) {
+    //   ghosts[i].edible = true;
+    // }
+
+    ghosts.forEach(function(ghost) {
+      ghost['edible'] = true;
+    });
+  } else {
+    console.log('\nNo more power-pellets left!');
   }
 }
 
@@ -109,6 +126,18 @@ function processInput(key) {
       break;
     case '1':
       eatGhost(1);
+      break;
+    case '2':
+      eatGhost(2);
+      break;
+    case '3':
+      eatGhost(3);
+      break;
+    case '4':
+      eatGhost(5);
+      break;
+    case 'p':
+      eatPowerPellet();
       break;
     default:
       console.log('\nInvalid Command!');
