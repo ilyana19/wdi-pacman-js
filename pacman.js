@@ -63,7 +63,7 @@ function displayMenu() {
   if(powerPellets > 0) console.log("(p) Eat Power-Pellet");
 
   for(var i = 0; i < ghosts.length; i++) {
-    console.log("(" + (i+1) + ") Eat " + ghosts[i].name);
+    console.log("(" + (i+1) + ") Eat " + ghosts[i].name + " (" + isEdible(ghosts[i]) + ")");
   }
 
   console.log('(q) Quit');
@@ -72,6 +72,14 @@ function displayMenu() {
 function displayPrompt() {
   // process.stdout.write is similar to console.log except it doesn't add a new line after the text
   process.stdout.write('\nWaka Waka :v '); // :v is the Pac-Man emoji.
+}
+
+function isEdible(ghost) {
+  if (ghost.edible === false) {
+    return 'inedible';
+  } else {
+    return 'edible';
+  }
 }
 
 // Menu Options
@@ -86,6 +94,10 @@ function eatGhost(ghost) {
       lives -= 1;
       console.log("\n" + ghosts[ghost-1].name + " that has the colour " + ghosts[ghost-1].colour + " is not edible.");
       gameOver(lives);
+    } else {
+      score += 200;
+      ghosts[ghost-1].edible = false;
+      console.log("\nPacman just ate a " + ghosts[ghost-1].character + " " + ghosts[ghost-1].name + "!");
     }
   }
 }
@@ -134,7 +146,7 @@ function processInput(key) {
       eatGhost(3);
       break;
     case '4':
-      eatGhost(5);
+      eatGhost(4);
       break;
     case 'p':
       eatPowerPellet();
@@ -162,7 +174,7 @@ drawScreen();
 stdin.on('data', function(key) {
   process.stdout.write(key);
   processInput(key);
-  setTimeout(drawScreen, 1000); // The command prompt will flash a message for 300 milliseoncds before it re-draws the screen. You can adjust the 300 number to increase this.
+  setTimeout(drawScreen, 2000); // The command prompt will flash a message for 300 milliseoncds before it re-draws the screen. You can adjust the 300 number to increase this.
 });
 
 // Player Quits
