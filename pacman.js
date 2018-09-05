@@ -143,9 +143,11 @@ function eatGhost(ghost) {
     } else {
       ghostScores(counter)
       counter++;
+
       ghosts[ghost-1].edible = false;
       console.log("\nPacman just ate a " + ghosts[ghost-1].character + " " + ghosts[ghost-1].name + "!");
-      console.log(counter);
+
+      if (counter > 4) counter = 1; //resetting number of eaten ghost counter
     }
   }
 }
@@ -164,7 +166,7 @@ function eatPowerPellet() {
     powerPellets -= 1;
 
     ghosts.forEach(function(ghost) {
-      ghost['edible'] = true;
+      ghost.edible = true;
     });
   } else {
     console.log('\nNo more power-pellets left!');
