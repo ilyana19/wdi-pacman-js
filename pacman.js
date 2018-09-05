@@ -178,6 +178,13 @@ function eatPowerPellet() {
   } else {
     console.log('\nNo more power-pellets left!');
   }
+
+  //after ~8secs, ghosts are inedible again until you eat another power pellet
+  setTimeout(function() {
+    ghosts.forEach(function(ghost) {
+      ghost.edible = false;
+    });
+  }, 8000);
 }
 
 function gameOver(lives) {
@@ -243,7 +250,7 @@ drawScreen();
 stdin.on('data', function(key) {
   process.stdout.write(key);
   processInput(key);
-  setTimeout(drawScreen, 2000); // The command prompt will flash a message for 300 milliseoncds before it re-draws the screen. You can adjust the 300 number to increase this.
+  setTimeout(drawScreen, 1200); // The command prompt will flash a message for 300 milliseoncds before it re-draws the screen. You can adjust the 300 number to increase this.
 });
 
 // Player Quits
