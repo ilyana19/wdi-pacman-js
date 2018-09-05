@@ -3,6 +3,7 @@ var score = 0;
 var lives = 2;
 var powerPellets = 4;
 var dotsRemaining = 240;
+var counter = 1;
 
 // Define your ghosts here
 var inky = {
@@ -140,11 +141,20 @@ function eatGhost(ghost) {
       console.log("\n" + ghosts[ghost-1].name + " that has the colour " + ghosts[ghost-1].colour + " is not edible.");
       gameOver(lives);
     } else {
-      score += 200;
+      ghostScores(counter)
+      counter++;
       ghosts[ghost-1].edible = false;
       console.log("\nPacman just ate a " + ghosts[ghost-1].character + " " + ghosts[ghost-1].name + "!");
+      console.log(counter);
     }
   }
+}
+
+function ghostScores(numGhost) {
+  if (numGhost === 1) score += 200;
+  else if (numGhost === 2) score += 400;
+  else if (numGhost === 3) score += 800;
+  else if (numGhost === 4) score += 1600;
 }
 
 function eatPowerPellet() {
