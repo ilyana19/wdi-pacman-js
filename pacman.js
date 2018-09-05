@@ -2,6 +2,7 @@
 var score = 0;
 var lives = 2;
 var powerPellets = 4;
+var dotsRemaining = 240;
 
 // Define your ghosts here
 var inky = {
@@ -55,12 +56,18 @@ function clearScreen() {
 function displayStats() {
   console.log('Score: ' + score + '     Lives: ' + lives);
   console.log("\n\nPower-Pellets: " + powerPellets);
+  console.log("\n\nDots Remaining: " + dotsRemaining);
 }
 
 function displayMenu() {
   console.log('\n\nSelect Option:\n');  // each \n creates a new line
-  console.log('(d) Eat Dot');
-  if(powerPellets > 0) console.log("(p) Eat Power-Pellet");
+  if (dotsRemaining > 0) {
+    console.log('(a) Eat Dot');
+    console.log('(b) Eat 10 Dots');
+    console.log('(c) Eat 100 Dots');
+    console.log('(d) Eat Remaining Dots');
+  }
+  if (powerPellets > 0) console.log("(p) Eat Power-Pellet");
 
   for(var i = 0; i < ghosts.length; i++) {
     console.log("(" + (i+1) + ") Eat " + ghosts[i].name + " (" + isEdible(ghosts[i]) + ")");
@@ -83,9 +90,47 @@ function isEdible(ghost) {
 }
 
 // Menu Options
-function eatDot() {
-  console.log('\nChomp!');
-  score += 10;
+function eatDot(num) {
+  var baseScore = 10; //honestly never played much of pacman so i'll assume this scoring system is correct
+
+  switch(num) {
+    case 1:
+      if (dotsRemaining > 0) {
+        console.log('\nChomp!');
+        score += baseScore;
+        dotsRemaining -= 1;
+      } else {
+        console.log("\nInvalid Input");
+      }
+      break;
+    case 2:
+      if (dotsRemaining >= 10) {
+        console.log('\nChomp! x10');
+        score += (baseScore * 10)
+        dotsRemaining -= 10;
+      } else {
+        console.log("\nInvalid Input");
+      }
+      break;
+    case 3:
+      if (dotsRemaining >= 100) {
+        console.log('\nChomp! x100');
+        score += (baseScore * 100)
+        dotsRemaining -= 100;
+      } else {
+        console.log("\nInvalid Input");
+      }
+      break;
+    case 4:
+      if (dotsRemaining > 0) {
+        console.log('\nChomp! All remining dots.');
+        score += (baseScore * dotsRemaining);
+        dotsRemaining -= dotsRemaining;
+      } else {
+        console.log("\nInvalid Input");
+      }
+      break;
+  }
 }
 
 function eatGhost(ghost) {
@@ -108,10 +153,6 @@ function eatPowerPellet() {
     score += 50;
     powerPellets -= 1;
 
-    // for (var i = 0; i < ghosts.length; i++) {
-    //   ghosts[i].edible = true;
-    // }
-
     ghosts.forEach(function(ghost) {
       ghost['edible'] = true;
     });
@@ -133,8 +174,17 @@ function processInput(key) {
     case 'q':
       process.exit();
       break;
+    case 'a':
+      eatDot(1);
+      break;
+    case 'b':
+      eatDot(2);
+      break;
+    case 'c':
+      eatDot(3);
+      break;
     case 'd':
-      eatDot();
+      eatDot(4);
       break;
     case '1':
       eatGhost(1);
