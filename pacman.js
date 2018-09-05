@@ -160,6 +160,13 @@ function ghostScores(numGhost) {
 }
 
 function eatPowerPellet() {
+  for (var i = 0; i < ghosts.length; i++) {
+    if (ghosts[i].edible === true) {
+      console.log('\nYou already have a power pellet active!');
+      return false; //ends the function
+    }
+  }
+
   if (powerPellets > 0) {
     console.log('\nCHOMP!');
     score += 50;
